@@ -10,13 +10,26 @@ import { rotate } from './utils/rotate'
  * This file contains actions for updating state after each of the required callbacks
  */
 
+function getOffset(config: any, data: any, zoom?: number ) {
+  let offset = { x: data.x, y: data.y }
+  if (config && config.snapToGrid) {
+    offset = { x: Math.round(data.x / 20) * 20, y: Math.round(data.y / 20) * 20 }
+  }
+  if (zoom) {
+    offset.x = (offset.x / zoom)
+    offset.y = (offset.y / zoom)
+  }
+  return offset
+}
+
 export const onDragNode: IOnDragNode = ({ config, event, data, id }) => (chart: IChart) => {
   const nodechart = chart.nodes[id]
 
   if (nodechart) {
+    let position = getOffset(config, data)
     chart.nodes[id] = {
       ...nodechart,
-      position: config && config.snapToGrid ? { x: Math.round(data.x / 20) * 20, y: Math.round(data.y / 20) * 20 } : data,
+      position
     }
   }
 
@@ -28,17 +41,15 @@ export const onDragStop: IOnDragNode = ({ config, event, data, id }) => (chart: 
 }
 
 export const onZoomCanvas: IOnZoomCanvas = ({ config, data }) => (chart: IChart): IChart => {
-  console.log('BEFORE: ', chart.zoom, data.scale)
+  console.log('Zoom: ', data)
+  chart.offset = getOffset( config, { x: data.positionX, y: data.positionY }, chart.zoom )
   chart.zoom = data.scale
-  console.log('AFTER: ', chart.zoom, data.scale)
   return chart
 }
 
 export const onDragCanvas: IOnDragCanvas = ({ config, data }) => (chart: IChart): IChart => {
-  chart.offset = { x: data.x, y: data.y }
-  if (config && config.snapToGrid) {
-    chart.offset = { x: Math.round(data.x / 20) * 20, y: Math.round(data.y / 20) * 20 }
-  }
+  console.log('Drag: ', data)
+  chart.offset = getOffset( config, { x: data.positionX, y: data.positionY }, chart.zoom )
   return chart
 }
 

@@ -8,6 +8,7 @@ import {
   IOnNodeClick, IOnDragStop, IOnNodeSizeChange, IOnPortPositionChange,
   IPortDefaultProps, IPortsDefaultProps, IPosition, ISelectedOrHovered, ISize, PortWrapper, IOnPortMouseEnter,
 } from '../../'
+import CanvasContext from '../Canvas/CanvasContext'
 import { noop } from '../../utils'
 import { INodeDefaultProps, NodeDefault } from './Node.default'
 
@@ -60,6 +61,7 @@ export const NodeWrapper = ({
   onLinkCancel,
   onPortEnter,
 }: INodeWrapperProps) => {
+
   const [size, setSize] = React.useState<ISize>({ width: 0, height: 0 })
 
   const compRef = React.useRef<HTMLElement>(null)
@@ -88,10 +90,6 @@ export const NodeWrapper = ({
       <Ports config={config}>
         { Object.keys(node.ports).map((portId) => {
           let style = {}
-          // if (node.ports[portId].position) {
-          //   style['left'] = node.ports[portId].position!.x;
-          //   style['top'] = node.ports[portId].position!.y;
-          // }
           return (
             <PortWrapper
               config={config}
@@ -118,12 +116,15 @@ export const NodeWrapper = ({
     </>
   )
 
+  const { zoomScale } = React.useContext(CanvasContext)
+
   return (
     <Draggable
       bounds="parent"
       axis="both"
       position={node.position}
       grid={[1,1]}
+      scale={zoomScale}
       onStart={ (e) => {
         // Stop propagation so the canvas does not move
         e.stopPropagation()

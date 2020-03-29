@@ -94,21 +94,23 @@ export class CanvasWrapper extends React.Component<ICanvasWrapperProps, IState> 
 
     config.readonly = disableSelection
 
-    console.log(zoom)
-
     return (
       <CanvasContext.Provider value={{ offsetX: this.state.offsetX, offsetY: this.state.offsetY, zoomScale: zoom }}>
         <ComponentOuter config={config} ref={this.ref}>
           <TransformWrapper 
+            defaultPositionX={position.x}
+            defaultPositionY={position.y}
             scale={zoom}
             options={options}
             zoomIn={{ disabled: false, step: 300 }}
-            wheel={{ disabled: false, step: 100 }}
+            wheel={{ disabled: false, step: 50 }}
             doubleClick={{ disabled: false, step: 50, mode: 'zoomIn' }}
             pinch={{ disabled: false }}
             onWheel={(data: any) => onZoomCanvas({ config, data })}
-            onPinching={(data: any) => onZoomCanvas({ config, data })}
-            onPanning={(data: any) => onDragCanvas({ config, data: { x: data.positionX, y: data.positionY } })}>
+            onWheelStop={(data: any) => onZoomCanvas({ config, data })}
+            // onPinching={(data: any) => onZoomCanvas({ config, data })}
+            onPanning={(data: any) => onDragCanvas({ config, data })}
+            onPanningStop={(data: any) => onDragCanvas({ config, data })}>
             <TransformComponent>
               <ComponentInner
                 config={config}

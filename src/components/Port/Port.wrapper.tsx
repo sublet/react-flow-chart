@@ -47,7 +47,6 @@ export class PortWrapper extends React.Component<IPortWrapperProps> {
 
   private nodeRef = React.createRef<HTMLDivElement>()
 
-
   public componentDidUpdate (prevProps: IPortWrapperProps) {
     // Update port position after a re-render if node.size has changed
     if (!isEqual(this.props.node.size, prevProps.node.size)) {
@@ -92,8 +91,8 @@ export class PortWrapper extends React.Component<IPortWrapperProps> {
         config,
         linkId, startEvent, fromNodeId, fromPortId,
         toPosition: {
-          x: ((e.clientX - offsetX - offset.x) / zoomScale),
-          y: ((e.clientY - offsetY - offset.y) / zoomScale),
+          x: ((e.clientX / zoomScale) - (offsetX / zoomScale) - offset.x),
+          y: ((e.clientY / zoomScale) - (offsetY / zoomScale) - offset.y),
         },
       })
     }
