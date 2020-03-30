@@ -8,7 +8,7 @@ export interface IChart {
   links: {
     [id: string]: ILink,
   }
-  zoom: number
+  zoom: IZoom
   properties?: any
 
   /** System Temp */
@@ -60,4 +60,18 @@ export interface ILink {
     position?: IPosition,
   }
   properties?: any
+}
+
+export interface IZoom {
+  scale: number,
+  transformEnabled?: boolean,
+  minScale?: number,
+  maxScale?: number,
+  wheel?: {
+    disabled?: boolean,
+    step?: number
+  }
+  zoomIn?: {
+    step?: number
+  }
 }

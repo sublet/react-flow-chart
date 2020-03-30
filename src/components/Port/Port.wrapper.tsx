@@ -91,10 +91,19 @@ export class PortWrapper extends React.Component<IPortWrapperProps> {
         config,
         linkId, startEvent, fromNodeId, fromPortId,
         toPosition: {
-          x: ((e.clientX / zoomScale) - (offsetX / zoomScale) - offset.x),
-          y: ((e.clientY / zoomScale) - (offsetY / zoomScale) - offset.y),
+          x: (e.clientX - offsetX - offset.x) / zoomScale,
+          y: (e.clientY - offsetY - offset.y) / zoomScale,
         },
       })
+
+      // onLinkMove({
+      //   config,
+      //   linkId, startEvent, fromNodeId, fromPortId,
+      //   toPosition: {
+      //     x: ((e.clientX / zoomScale) - (offsetX / zoomScale) - offset.x),
+      //     y: ((e.clientY / zoomScale) - (offsetY / zoomScale) - offset.y),
+      //   },
+      // })
     }
 
     // Create and bind the mouse up handler

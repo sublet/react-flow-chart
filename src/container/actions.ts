@@ -41,15 +41,13 @@ export const onDragStop: IOnDragNode = ({ config, event, data, id }) => (chart: 
 }
 
 export const onZoomCanvas: IOnZoomCanvas = ({ config, data }) => (chart: IChart): IChart => {
-  console.log('Zoom: ', data)
-  chart.offset = getOffset( config, { x: data.positionX, y: data.positionY }, chart.zoom )
-  chart.zoom = data.scale
+  chart.offset = getOffset( config, { x: data.positionX, y: data.positionY } )
+  chart.zoom.scale = data.scale
   return chart
 }
 
 export const onDragCanvas: IOnDragCanvas = ({ config, data }) => (chart: IChart): IChart => {
-  console.log('Drag: ', data)
-  chart.offset = getOffset( config, { x: data.positionX, y: data.positionY }, chart.zoom )
+  chart.offset = getOffset( config, { x: data.positionX, y: data.positionY } )
   return chart
 }
 

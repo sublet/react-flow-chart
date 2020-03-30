@@ -5,7 +5,14 @@ export const chartSimple: IChart = {
     x: 0,
     y: 0,
   },
-  zoom: 1,
+  zoom: {
+    scale: 1,
+    transformEnabled: true,
+    minScale: .25,
+    maxScale: 2,
+    wheel: { disabled: false, step: 75 },
+    zoomIn: { step: 300 }
+  },
   nodes: {
     node1: {
       id: 'node1',
