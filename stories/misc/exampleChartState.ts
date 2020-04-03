@@ -10,8 +10,22 @@ export const chartSimple: IChart = {
     transformEnabled: true,
     minScale: .25,
     maxScale: 2,
-    wheel: { disabled: false, step: 75 },
-    zoomIn: { step: 300 }
+    pan: {
+      disabled: false,
+      touchPadEnabled: true
+    },
+    wheel: { 
+      disabled: false,
+      step: 75,
+      wheelEnabled: true,
+      touchPadEnabled: true
+    },
+    zoomIn: { 
+      step: 300
+    },
+    zoomOut: { 
+      step: 300
+    }
   },
   nodes: {
     node1: {

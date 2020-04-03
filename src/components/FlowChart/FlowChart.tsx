@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {
   CanvasInnerDefault, CanvasOuterDefault, CanvasWrapper, ICanvasInnerDefaultProps, ICanvasOuterDefaultProps, IChart, IConfig, ILink,
-  ILinkDefaultProps, INodeDefaultProps, INodeInnerDefaultProps, IOnCanvasClick, IOnCanvasDrop, IOnDeleteKey, IOnZoomCanvas, IOnDragCanvas,
+  ILinkDefaultProps, INodeDefaultProps, INodeInnerDefaultProps, IOnCanvasClick, IOnCanvasDrop, IOnDeleteKey, IOnZoomCanvas, IOnDragCanvas, IOnCanvasKeyCommand,
   IOnDragNode, IOnDragStop, IOnLinkCancel, IOnLinkClick, IOnLinkComplete, IOnLinkMouseEnter, IOnPortMouseEnter,
   IOnLinkMouseLeave, IOnLinkMove, IOnLinkStart, IOnNodeClick, IOnNodeSizeChange, IOnPortPositionChange, IPortDefaultProps,
   IPortsDefaultProps, ISelectedOrHovered, LinkDefault, LinkWrapper, NodeDefault, NodeInnerDefault, NodeWrapper, PortDefault, PortsDefault,
@@ -11,6 +11,7 @@ export interface IFlowChartCallbacks {
   onDragNode: IOnDragNode
   onDragStop: IOnDragStop
   onDragCanvas: IOnDragCanvas
+  onCanvasKeyCommand: IOnCanvasKeyCommand
   onZoomCanvas: IOnZoomCanvas
   onCanvasDrop: IOnCanvasDrop
   onLinkStart: IOnLinkStart
@@ -69,6 +70,7 @@ export const FlowChart = (props: IFlowChartProps) => {
       onDragStop,
       onDragCanvas,
       onZoomCanvas,
+      onCanvasKeyCommand,
       onCanvasDrop,
       onLinkStart,
       onLinkMove,
@@ -97,7 +99,7 @@ export const FlowChart = (props: IFlowChartProps) => {
   } = props
   const { links, nodes, selected, hovered } = chart
 
-  const canvasCallbacks = { onDragCanvas, onZoomCanvas, onCanvasClick, onDeleteKey, onCanvasDrop }
+  const canvasCallbacks = { onDragCanvas, onZoomCanvas, onCanvasClick, onDeleteKey, onCanvasDrop, onCanvasKeyCommand }
   const linkCallbacks = { onLinkMouseEnter, onLinkMouseLeave, onLinkClick }
   const nodeCallbacks = { onDragNode, onDragStop, onNodeClick, onNodeSizeChange }
   const portCallbacks = { onPortPositionChange, onLinkStart, onLinkMove, onLinkComplete, onLinkCancel, onPortEnter }

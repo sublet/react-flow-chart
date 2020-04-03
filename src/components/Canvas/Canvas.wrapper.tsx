@@ -1,7 +1,7 @@
 import * as React from 'react'
 // import DraggableCore from 'react-draggable'
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
-import { IConfig, IZoom, IOnCanvasClick, IOnCanvasDrop, IOnDeleteKey, IOnZoomCanvas, IOnDragCanvas, REACT_FLOW_CHART } from '../../'
+import { IConfig, IZoom, IOnCanvasClick, IOnCanvasDrop, IOnDeleteKey, IOnZoomCanvas, IOnDragCanvas, IOnCanvasKeyCommand, REACT_FLOW_CHART } from '../../'
 import CanvasContext from './CanvasContext'
 import { ICanvasInnerDefaultProps } from './CanvasInner.default'
 import { ICanvasOuterDefaultProps } from './CanvasOuter.default'
@@ -13,6 +13,7 @@ export interface ICanvasWrapperProps {
     y: number,
   }
   zoom: IZoom,
+  onCanvasKeyCommand: IOnCanvasKeyCommand
   onZoomCanvas: IOnZoomCanvas
   onDragCanvas: IOnDragCanvas
   onDeleteKey: IOnDeleteKey
@@ -75,6 +76,7 @@ export class CanvasWrapper extends React.Component<ICanvasWrapperProps, IState> 
       zoom,
       onZoomCanvas,
       onDragCanvas,
+      onCanvasKeyCommand,
       children,
       onCanvasDrop,
     } = this.props
@@ -107,6 +109,8 @@ export class CanvasWrapper extends React.Component<ICanvasWrapperProps, IState> 
             scale={zoom.scale}
             options={options}
             zoomIn={zoom.zoomIn || { step: 300 }}
+            zoomOut={zoom.zoomOut || { step: 300 }}
+            pan={zoom.pan || { disabled: false }}
             wheel={zoom.wheel || { disabled: false, step: 75 }}
             doubleClick={{ disabled: true, step: 10, mode: doubleClickMode }}
             pinch={{ disabled: false }}
@@ -118,7 +122,7 @@ export class CanvasWrapper extends React.Component<ICanvasWrapperProps, IState> 
               <ComponentInner
                 config={config}
                 children={children}
-                onClick={() => console.log('onClick')}
+                onClick={() => null}
                 tabIndex={0}
                 onKeyDown={ (e: React.KeyboardEvent) => {
                   // delete or backspace keys
@@ -128,9 +132,10 @@ export class CanvasWrapper extends React.Component<ICanvasWrapperProps, IState> 
                 }}
                 onKeyUp={ (e: React.KeyboardEvent) => {
                   // delete or backspace keys
-                  if (e.keyCode === 91 && disableSelection) {
+                  if (e.keyCode === 32 && disableSelection) {
                     this.setState({ disableSelection: false })
                   }
+                  onCanvasKeyCommand({ config, keyCode: e.keyCode })
                 }}
                 onDrop={ (e: any) => {
                   const data = JSON.parse(e.dataTransfer.getData(REACT_FLOW_CHART))

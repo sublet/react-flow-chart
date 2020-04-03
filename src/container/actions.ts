@@ -1,6 +1,6 @@
 import { v4 } from 'uuid'
 import {
-  IChart, IOnCanvasClick, IOnCanvasDrop, IOnDeleteKey, IOnDragCanvas, IOnZoomCanvas, IOnDragNode, IOnLinkCancel,
+  IChart, IOnCanvasClick, IOnCanvasDrop, IOnDeleteKey, IOnDragCanvas, IOnZoomCanvas, IOnDragNode, IOnCanvasKeyCommand, IOnLinkCancel,
   IOnLinkComplete, IOnLinkMouseEnter, IOnLinkMouseLeave, IOnLinkMove, IOnLinkStart, IOnNodeClick,
   IOnNodeSizeChange, IOnPortPositionChange, IOnPortMouseEnter
 } from '../'
@@ -37,6 +37,10 @@ export const onDragNode: IOnDragNode = ({ config, event, data, id }) => (chart: 
 }
 
 export const onDragStop: IOnDragNode = ({ config, event, data, id }) => (chart: IChart) => {
+  return chart
+}
+
+export const onCanvasKeyCommand: IOnCanvasKeyCommand = ({ config, keyCode }) => (chart: IChart) => {
   return chart
 }
 

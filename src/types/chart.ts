@@ -67,11 +67,22 @@ export interface IZoom {
   transformEnabled?: boolean,
   minScale?: number,
   maxScale?: number,
+  pan?: {
+    disabled?: boolean,
+    touchPadEnabled?: boolean
+  }
   wheel?: {
+    disabled?: boolean,
+    step?: number,
+    wheelEnabled?: boolean,
+    touchPadEnabled?: boolean
+  }
+  zoomIn?: {
     disabled?: boolean,
     step?: number
   }
-  zoomIn?: {
+  zoomOut?: {
+    disabled?: boolean,
     step?: number
   }
 }

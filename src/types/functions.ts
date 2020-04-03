@@ -11,6 +11,8 @@ export type IOnZoomCanvas = (input: { config?: IConfig, data: any }) => void
 
 export type IOnDragCanvas = (input: { config?: IConfig, data: any }) => void
 
+export type IOnCanvasKeyCommand = (input: { config?: IConfig, keyCode: number }) => void
+
 export type IOnPortPositionChange = (input: { config?: IConfig, node: INode, port: IPort, el: HTMLDivElement, nodesEl: HTMLDivElement | IOffset }) => void
 
 export interface IOnLinkBaseEvent {
