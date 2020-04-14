@@ -47,7 +47,6 @@ export class PortWrapper extends React.Component<IPortWrapperProps> {
 
   private nodeRef = React.createRef<HTMLDivElement>()
 
-
   public componentDidUpdate (prevProps: IPortWrapperProps) {
     // Update port position after a re-render if node.size has changed
     if (!isEqual(this.props.node.size, prevProps.node.size)) {
@@ -86,16 +85,25 @@ export class PortWrapper extends React.Component<IPortWrapperProps> {
     // Create the move handler
     // This will update the position as the mouse moves
     const mouseMoveHandler = (e: MouseEvent) => {
-      const { offsetX, offsetY } = this.context
+      const { offsetX, offsetY, zoomScale } = this.context
 
       onLinkMove({
         config,
         linkId, startEvent, fromNodeId, fromPortId,
         toPosition: {
-          x: e.clientX - offsetX - offset.x,
-          y: e.clientY - offsetY - offset.y,
+          x: (e.clientX - offsetX - offset.x) / zoomScale,
+          y: (e.clientY - offsetY - offset.y) / zoomScale,
         },
       })
+
+      // onLinkMove({
+      //   config,
+      //   linkId, startEvent, fromNodeId, fromPortId,
+      //   toPosition: {
+      //     x: ((e.clientX / zoomScale) - (offsetX / zoomScale) - offset.x),
+      //     y: ((e.clientY / zoomScale) - (offsetY / zoomScale) - offset.y),
+      //   },
+      // })
     }
 
     // Create and bind the mouse up handler
@@ -161,7 +169,7 @@ export class PortWrapper extends React.Component<IPortWrapperProps> {
   }
 
   public onMouseDownCatch = () => {
-    console.log('Art wears women clothes!')
+    console.log(':: Art wears women clothes! ::')
   }
 
   public render () {

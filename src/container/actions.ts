@@ -1,6 +1,6 @@
 import { v4 } from 'uuid'
 import {
-  IChart, IOnCanvasClick, IOnCanvasDrop, IOnDeleteKey, IOnDragCanvas, IOnDragNode, IOnLinkCancel,
+  IChart, IOnCanvasClick, IOnCanvasDrop, IOnDeleteKey, IOnDragCanvas, IOnZoomCanvas, IOnDragNode, IOnCanvasKeyCommand, IOnLinkCancel,
   IOnLinkComplete, IOnLinkMouseEnter, IOnLinkMouseLeave, IOnLinkMove, IOnLinkStart, IOnNodeClick,
   IOnNodeSizeChange, IOnPortPositionChange, IOnPortMouseEnter
 } from '../'
@@ -10,13 +10,26 @@ import { rotate } from './utils/rotate'
  * This file contains actions for updating state after each of the required callbacks
  */
 
+function getOffset(config: any, data: any, zoom?: number ) {
+  let offset = { x: data.x, y: data.y }
+  if (config && config.snapToGrid) {
+    offset = { x: Math.round(data.x / 20) * 20, y: Math.round(data.y / 20) * 20 }
+  }
+  if (zoom) {
+    offset.x = (offset.x / zoom)
+    offset.y = (offset.y / zoom)
+  }
+  return offset
+}
+
 export const onDragNode: IOnDragNode = ({ config, event, data, id }) => (chart: IChart) => {
   const nodechart = chart.nodes[id]
 
   if (nodechart) {
+    let position = getOffset(config, data)
     chart.nodes[id] = {
       ...nodechart,
-      position: config && config.snapToGrid ? { x: Math.round(data.x / 20) * 20, y: Math.round(data.y / 20) * 20 } : data,
+      position
     }
   }
 
@@ -27,8 +40,18 @@ export const onDragStop: IOnDragNode = ({ config, event, data, id }) => (chart: 
   return chart
 }
 
-export const onDragCanvas: IOnDragCanvas = ({ config, event, data }) => (chart: IChart): IChart => {
-  chart.offset = config && config.snapToGrid ? { x: Math.round(data.x / 20) * 20, y: Math.round(data.y / 20) * 20 } : data
+export const onCanvasKeyCommand: IOnCanvasKeyCommand = ({ config, keyCode }) => (chart: IChart) => {
+  return chart
+}
+
+export const onZoomCanvas: IOnZoomCanvas = ({ config, data }) => (chart: IChart): IChart => {
+  chart.offset = getOffset( config, { x: data.positionX, y: data.positionY } )
+  chart.zoom.scale = data.scale
+  return chart
+}
+
+export const onDragCanvas: IOnDragCanvas = ({ config, data }) => (chart: IChart): IChart => {
+  chart.offset = getOffset( config, { x: data.positionX, y: data.positionY } )
   return chart
 }
 
